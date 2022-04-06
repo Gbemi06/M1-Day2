@@ -7,13 +7,13 @@ import uniqid from "uniqid";
 const authorsRouter = express.Router();
 
 const currentPath = fileURLToPath(import.meta.url);
-console.log(currentPath);
+// console.log(currentPath);
 
 const parentFolderPath = dirname(currentPath);
-console.log(parentFolderPath);
+// console.log(parentFolderPath);
 
 const authorsPath = join(parentFolderPath, "authors.json");
-console.log(authorsPath);
+// console.log(authorsPath);
 
 // CREATE --> POST request on http://localhost:3001/authors/ (+ body)
 
