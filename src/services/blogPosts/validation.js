@@ -2,12 +2,12 @@ import { checkSchema, validationResult } from "express-validator";
 import createError from "http-errors";
 
 const blogPostSchema = {
-  id: {
+  /*  id: {
     in: ["params", "query"],
     errorMessage: "ID validation failed!",
     isInt: true,
     toInt: true,
-  },
+  }, */
   category: {
     in: ["body"],
     isString: {
