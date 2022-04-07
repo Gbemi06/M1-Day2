@@ -67,7 +67,7 @@ export const checkValidationResult = (request, response, next) => {
     // There is validation error
     next(
       createError(400, "Validation problems in request.body", {
-        errorList: errors.array,
+        errorList: errors.array(),
       })
     );
   } else {
