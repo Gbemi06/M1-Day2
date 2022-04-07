@@ -53,10 +53,23 @@ blogPostRouter.get("/:blogPostId", (request, response) => {
 
 blogPostRouter.put("/:blogPostId", (request, response) => {
   try {
-    console.log("request");
+    const postId = request.params.blogPostId;
+    const getPosts = getBlogPosts();
+    const blogPostIndex = getPosts.findIndex((post) => post.id === postId);
+    const oldBlogPost = getPosts[blogPostIndex];
+    const updatedPost = {
+      ...oldBlogPost,
+      ...request.body,
+      updatedAt: new Date(),
+    };
 
-    response.send();
-  } catch (error) {}
+    updatedPost = getPosts[blogPostIndex];
+
+    postBlogPosts(updatedPost);
+    response.send(updatedPost);
+  } catch (error) {
+    next(error);
+  }
 });
 
 blogPostRouter.delete("/:blogPostId", (request, response) => {
