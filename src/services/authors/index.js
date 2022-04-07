@@ -13,7 +13,7 @@ const parentFolderPath = dirname(currentPath);
 // console.log(parentFolderPath);
 
 const authorsPath = join(parentFolderPath, "authors.json");
-// console.log(authorsPath);
+//console.log(authorsPath);
 
 // CREATE --> POST request on http://localhost:3001/authors/ (+ body)
 
