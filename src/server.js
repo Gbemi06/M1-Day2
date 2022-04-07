@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import listUrl from "express-list-endpoints";
 import authorsRouter from "./services/authors/index.js";
 import blogPostRouter from "./services/blogPosts/index.js";
@@ -7,7 +8,11 @@ import {
   notFoundError,
   unauthorizedError,
   badRequestError,
-} from "./services/errorHandler.js";
+} from "./errorHandler.js";
+import { join } from "path";
+
+const publicFolderPath = join(process.cwd(), "./public");
+console.log(publicFolderPath);
 
 const server = express();
 

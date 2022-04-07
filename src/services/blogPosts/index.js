@@ -1,14 +1,12 @@
 import express from "express";
-import fs from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 import uniqid from "uniqid";
+import { getBlogPosts, postBlogPosts } from "../../lib/fs-tools.js";
 import createError from "http-errors";
 import { checkBlogPostSchema, checkValidationResult } from "./validation.js";
 
 const blogPostRouter = express.Router();
 
-const blogPostJSONPath = join(
+/* const blogPostJSONPath = join(
   dirname(fileURLToPath(import.meta.url)),
   "blogPost.json"
 );
@@ -20,7 +18,7 @@ console.log(getBlogPosts);
 
 const postBlogPosts = (content) =>
   fs.writeFileSync(blogPostJSONPath, JSON.stringify(content));
-console.log(postBlogPosts);
+console.log(postBlogPosts); */
 
 blogPostRouter.post(
   "/",
