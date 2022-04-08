@@ -2,7 +2,10 @@ import express from "express";
 import uniqid from "uniqid";
 import { getBlogPosts, postBlogPosts } from "../../lib/fs-tools.js";
 import createError from "http-errors";
-import { checkBlogPostSchema, checkValidationResult } from "./validation.js";
+import {
+  checkBlogPostSchema,
+  checkValidationResult,
+} from "./blogPostValidation.js";
 
 const blogPostRouter = express.Router();
 
@@ -24,12 +27,12 @@ blogPostRouter.post(
   "/",
   checkBlogPostSchema,
   checkValidationResult,
-  (request, response, next) => {
+  async (request, response, next) => {
     try {
       const post = { ...request.body, createdAt: new Date(), id: uniqid() };
       console.log(post);
 
-      const posts = getBlogPosts();
+      const posts = await getBlogPosts();
       posts.push(post);
       postBlogPosts(posts);
 
@@ -40,9 +43,9 @@ blogPostRouter.post(
   }
 );
 
-blogPostRouter.get("/", (request, response, next) => {
+blogPostRouter.get("/", async (request, response, next) => {
   try {
-    const getPosts = getBlogPosts();
+    const getPosts = await getBlogPosts();
 
     response.send(getPosts);
   } catch (error) {
@@ -51,10 +54,10 @@ blogPostRouter.get("/", (request, response, next) => {
   }
 });
 
-blogPostRouter.get("/:blogPostId", (request, response, next) => {
+blogPostRouter.get("/:blogPostId", async (request, response, next) => {
   try {
     const postId = request.params.blogPostId;
-    const getPosts = getBlogPosts();
+    const getPosts = await getBlogPosts();
 
     const blogPost = getPosts.find((post) => post.id === postId);
 
@@ -64,10 +67,10 @@ blogPostRouter.get("/:blogPostId", (request, response, next) => {
   }
 });
 
-blogPostRouter.put("/:blogPostId", (request, response, next) => {
+blogPostRouter.put("/:blogPostId", async (request, response, next) => {
   try {
     const postId = request.params.blogPostId;
-    const getPosts = getBlogPosts();
+    const getPosts = await getBlogPosts();
     const blogPostIndex = getPosts.findIndex((post) => post.id === postId);
     const oldBlogPost = getPosts[blogPostIndex];
     const updatedPost = {
@@ -76,8 +79,7 @@ blogPostRouter.put("/:blogPostId", (request, response, next) => {
       updatedAt: new Date(),
     };
 
-    updatedPost = getPosts[blogPostIndex];
-
+    getPosts[blogPostIndex] = updatedPost;
     postBlogPosts(updatedPost);
     response.send(updatedPost);
   } catch (error) {
@@ -85,11 +87,12 @@ blogPostRouter.put("/:blogPostId", (request, response, next) => {
   }
 });
 
-blogPostRouter.delete("/:blogPostId", (request, response, next) => {
+blogPostRouter.delete("/:blogPostId", async (request, response, next) => {
   try {
     const postId = request.params.blogPostId;
-    const getPosts = getBlogPosts();
+    const getPosts = await getBlogPosts();
     const remainingPost = getPosts.filter((posts) => posts.id !== postId);
+    console.log(remainingPost);
     postBlogPosts(remainingPost);
 
     response.send(`post with id: ${postId} deleted`);
