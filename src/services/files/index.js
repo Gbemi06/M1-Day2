@@ -6,11 +6,12 @@ import { saveBlogPostsAvatar } from "../../lib/fs-tools.js";
 const filesRouter = express.Router();
 
 filesRouter.post(
-  "/:postsId/avatar",
+  "/singleUpload",
   multer().single("avatar"),
   async (request, response, next) => {
     try {
-      await saveBlogPostsAvatar(picture.jpeg.request.file.buffer);
+      console.log("file", request.file);
+      await saveBlogPostsAvatar(request.file.originalname, request.file.buffer);
       response.send();
     } catch (error) {
       next(error);
