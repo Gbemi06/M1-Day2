@@ -14,7 +14,6 @@ import {
 import { join } from "path";
 
 const publicFolderPath = join(process.cwd(), "./public");
-console.log(publicFolderPath);
 
 const server = express();
 

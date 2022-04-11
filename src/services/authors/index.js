@@ -1,27 +1,41 @@
 import uniqid from "uniqid";
 import { getAuthors, postAuthors } from "../../lib/fs-tools.js";
 import express from "express";
+import createError from "http-errors";
+import {
+  checkAuthorSchema,
+  checkValidationResult,
+} from "./authorsValidation.js";
 
 const authorsRouter = express.Router();
 
-authorsRouter.post("/", async (request, response, next) => {
-  try {
-    console.log("request successful", request.body);
-    const newAuthor = { ...request.body, createdAt: new Date(), id: uniqid() };
+authorsRouter.post(
+  "/",
+  checkValidationResult,
+  checkAuthorSchema,
+  async (request, response, next) => {
+    try {
+      console.log("request successful", request.body);
+      const newAuthor = {
+        ...request.body,
+        createdAt: new Date(),
+        id: uniqid(),
+      };
 
-    const author = await getAuthors();
+      const author = await getAuthors();
 
-    console.log("posted successful", author);
+      console.log("posted successful", author);
 
-    author.push(newAuthor);
+      author.push(newAuthor);
 
-    postAuthors(author);
+      postAuthors(author);
 
-    response.status(200).send({ id: newAuthor.id });
-  } catch (error) {
-    next(error);
+      response.status(200).send({ id: newAuthor.id });
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 // READ --> GET request on http://localhost:3001/authors/ (+ optional query parameters)
 
@@ -57,17 +71,23 @@ authorsRouter.put("/:authorId", async (request, response, next) => {
     const authorId = request.params.authorId;
     const authorsArray = await getAuthors();
 
-    const authorIndex = authorsArray.find((author) => author.id === authorId);
-    const authorToEdit = authorsArray[authorIndex];
-    const editedAuthor = {
-      ...authorToEdit,
-      ...request.body,
-      updatedAt: new Date(),
-    };
-    authorsArray[authorIndex] = editedAuthor;
+    const authorIndex = authorsArray.findIndex(
+      (author) => author.id === authorId
+    );
+    if (authorIndex !== 1) {
+      const authorToEdit = authorsArray[authorIndex];
+      const editedAuthor = {
+        ...authorToEdit,
+        ...request.body,
+        updatedAt: new Date(),
+      };
+      authorsArray[authorIndex] = editedAuthor;
 
-    postAuthors(editedAuthor);
-    response.send(editedAuthor);
+      postAuthors(authorsArray);
+      response.send(editedAuthor);
+    } else {
+      next(createError(404, `Author with id ${authorId} is not found`));
+    }
   } catch (error) {
     next(error);
   }
@@ -83,10 +103,12 @@ authorsRouter.delete("/:authorId", async (request, response, next) => {
     const otherAuthors = authorsArray.filter(
       (author) => author.id !== authorId
     );
-
-    postAuthors(otherAuthors);
-
-    response.send();
+    if (authorId !== 1) {
+      postAuthors(otherAuthors);
+      response.send(`Author with id ${authorId} was deleted successfully`);
+    } else {
+      next(createError(404, `The Author with id ${authorId} is not found`));
+    }
   } catch (error) {
     next(error);
   }

@@ -6,7 +6,7 @@ import { saveBlogPostsAvatar } from "../../lib/fs-tools.js";
 const filesRouter = express.Router();
 
 filesRouter.post(
-  "/singleUpload",
+  "/postId/avatar",
   multer().single("avatar"),
   async (request, response, next) => {
     try {

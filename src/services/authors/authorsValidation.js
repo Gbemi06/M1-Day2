@@ -1,65 +1,51 @@
 import { checkSchema, validationResult } from "express-validator";
 import createError from "http-errors";
 
-const blogPostSchema = {
+const authorSchema = {
   /*  id: {
     in: ["params", "query"],
     errorMessage: "ID validation failed!",
     isInt: true,
     toInt: true,
   }, */
-  category: {
+  name: {
     in: ["body"],
     isString: {
       errorMessage:
-        "Category validation failed! Category is mandatory and must be a string",
+        "Name validation failed! Name is mandatory and must be a string",
     },
   },
-  title: {
+  surname: {
     in: ["body"],
     isString: {
       errorMessage:
-        "Title validation failed! Title is mandatory and must be a string",
+        "surname validation failed! surname is mandatory and must be a string",
     },
   },
-  cover: {
+  email: {
+    in: ["body"],
+    isEmail: {
+      errorMessage:
+        "Email validation failed! Email is mandatory and must be in a email format",
+    },
+  },
+  date_of_birth: {
     in: ["body"],
     isString: {
       errorMessage:
-        "Category validation failed! Category is mandatory and must be a string",
+        "Date of birth validation failed! Date of Birth is mandatory and must be a string",
     },
   },
-  "readTime.value": {
-    in: ["body"],
-    isNumeric: {
-      errorMessage:
-        "readTime.value validation failed! readTime.value is mandatory and must be a Numeric",
-    },
-  },
-  "readTime.unit": {
+  avatar: {
     in: ["body"],
     isString: {
       errorMessage:
-        "readTime.unit validation failed! readTime.unit is mandatory and must be a string",
-    },
-  },
-  "author.name": {
-    in: ["body"],
-    isString: {
-      errorMessage:
-        "Author.name validation failed! Author is mandatory and must be a string",
-    },
-  },
-  "author.avatar": {
-    in: ["body"],
-    isString: {
-      errorMessage:
-        "Author.avatar validation failed! Author is mandatory and must be a string",
+        "avatar validation failed! avatar is mandatory and must be a string",
     },
   },
 };
 
-export const checkBlogPostSchema = checkSchema(blogPostSchema);
+export const checkAuthorSchema = checkSchema(authorSchema);
 
 export const checkValidationResult = (request, response, next) => {
   const errors = validationResult(request);

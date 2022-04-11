@@ -80,7 +80,7 @@ blogPostRouter.put("/:blogPostId", async (request, response, next) => {
     };
 
     getPosts[blogPostIndex] = updatedPost;
-    postBlogPosts(updatedPost);
+    postBlogPosts(getPosts);
     response.send(updatedPost);
   } catch (error) {
     next(error);
@@ -93,9 +93,13 @@ blogPostRouter.delete("/:blogPostId", async (request, response, next) => {
     const getPosts = await getBlogPosts();
     const remainingPost = getPosts.filter((posts) => posts.id !== postId);
     console.log(remainingPost);
-    postBlogPosts(remainingPost);
+    if (!postId !== 1) {
+      postBlogPosts(remainingPost);
 
-    response.send(`post with id: ${postId} deleted`);
+      response.send(`post with id: ${postId} is deleted`);
+    } else {
+      next(createError(404, `The Post with id ${postId} is not found`));
+    }
   } catch (error) {
     next(error);
   }
