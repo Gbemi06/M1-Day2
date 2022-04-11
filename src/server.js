@@ -15,9 +15,13 @@ import { join } from "path";
 
 const publicFolderPath = join(process.cwd(), "./public");
 
+console.log(process.env.PORT);
+
+const port = process.env.PORT || 3001;
+
 const server = express();
 
-const port = 3001;
+// const wishList = [process.env.FE_DEV_URL];
 
 server.use(express.static(publicFolderPath));
 server.use(cors());
