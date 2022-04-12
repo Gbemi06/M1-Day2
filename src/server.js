@@ -17,10 +17,28 @@ const publicFolderPath = join(process.cwd(), "./public");
 
 const server = express();
 
-const port = 3001;
+console.log(process.env.FE_DEV_URL);
+
+const port = process.env.PORT || 3001;
+
+const whitelist = [process.env.FE_DEV_URL, process.eventNames.FE_PROD_URL];
+
+console.log(process.env.PORT);
 
 server.use(express.static(publicFolderPath));
-server.use(cors());
+server.use(
+  cors({
+    origin: (origin, next) => {
+      console.log("this is the origin", origin);
+
+      if (!origin || whitelist.indexOf(origin) !== -1) {
+        next(null, true);
+      } else {
+        next(createError(400, "CORS error occurs"));
+      }
+    },
+  })
+);
 server.use(express.json());
 
 server.use("/authors", authorsRouter);

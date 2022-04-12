@@ -1,15 +1,1 @@
-[
-  {
-    "category": "Advent",
-    "title": "122",
-    "cover": "ARTICLE",
-    "readTime": { "value": 2, "unit": "minute" },
-    "author": {
-      "name": "gbemi",
-      "avatar": "http://localhost:3001/img/blogPost/beach.jpeg"
-    },
-    "createdAt": "2022-04-08T09:06:41.876Z",
-    "id": "123",
-    "updatedAt": "2022-04-08T14:23:53.065Z"
-  }
-]
+[]
