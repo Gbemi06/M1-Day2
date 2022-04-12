@@ -74,7 +74,7 @@ authorsRouter.put("/:authorId", async (request, response, next) => {
     const authorIndex = authorsArray.findIndex(
       (author) => author.id === authorId
     );
-    if (authorIndex !== 1) {
+    if (authorIndex !== -1) {
       const authorToEdit = authorsArray[authorIndex];
       const editedAuthor = {
         ...authorToEdit,
