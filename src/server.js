@@ -17,10 +17,7 @@ const publicFolderPath = join(process.cwd(), "./public");
 
 console.log(process.env.PORT);
 
-const port = process.env.PORT || 3001;
-
 const server = express();
-
 
 console.log(process.env.FE_DEV_URL);
 
@@ -29,7 +26,6 @@ const port = process.env.PORT || 3001;
 const whitelist = [process.env.FE_DEV_URL, process.eventNames.FE_PROD_URL];
 
 console.log(process.env.PORT);
-
 
 server.use(express.static(publicFolderPath));
 server.use(
